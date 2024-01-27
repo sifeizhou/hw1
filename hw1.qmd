@@ -1,11 +1,11 @@
 ---
 title: "Homework 1"
-author: "[Insert your name here]{style='background-color: yellow;'}"
+author: "[sifei zhou]{style='background-color: yellow;'}"
 toc: true
 title-block-banner: true
 title-block-style: default
-format: html
-#format: pdf
+#format: html
+format: pdf
 ---
 
 [Link to the Github repository](https://github.com/STAT380/hw1.git)
@@ -38,6 +38,10 @@ Please read the instructions carefully before submitting your assignment.
 ::: {.callout-tip}
 ## 20 points
 :::
+```{R}
+install.packages("dplyr")
+library(dplyr)
+```
 
 
 In this question, we will walk through the process of _forking_ a `git` repository and submitting a _pull request_. 
@@ -61,6 +65,10 @@ In this question, we will walk through the process of _forking_ a `git` reposito
     renv::activate()
     ```
     Follow the instrutions in order to make sure that `renv` is configured correctly. 
+
+```{R}
+renv::activate()
+```
 
 4. Work on the _reminaing part_ of this assignment as a `.qmd` file.
 
@@ -105,16 +113,34 @@ my_vec <- c(
 For the following questions, provide your answers in a code cell.
 
 1. What data type does the vector contain?
+```{R}
+#string
+```
 
 1. Create two new vectors called `my_vec_double` and `my_vec_int` which converts `my_vec` to Double & Integer types, respectively, 
+```{R}
+
+my_vec_double <- as.numeric(my_vec)
+
+my_vec_int <- as.integer(my_vec_double)
+
+```
 
 1. Create a new vector `my_vec_bool` which comprises of:
     * ```r TRUE```if an element in `my_vec_double` is $\le 0$
     * ```r FALSE``` if an element in `my_vec_double` is $\ge 0$
 
     How many elements of `my_vec_double` are greater than zero?
+```{R}
+my_vec_bool <- my_vec_double <= 0
+
+count_greater_than_zero <- sum(my_vec_double > 0)
+```
 
 1. Sort the values of `my_vec_double` in ascending order. 
+```{R}
+sorted_my_vec_double <- sort(my_vec_double)
+```
 
 
 <br><br><br><br>
@@ -178,16 +204,15 @@ mean(M)
 
 2. Write a function `row_wise_scan` which scans the entries of `M` one row after another and outputs the number of elements whose value is $\ge 0$. You can use the following **starter code**
 
-```R
+```{R}
 row_wise_scan <- function(x){
     n <- nrow(x)
     m <- ncol(x)
 
-    # Insert your code here
     count <- 0
-    for(...){
-        for(...){
-            if(...){
+    for(i in 1:n){
+        for(j in 1:m){
+            if(x[i, j] >= 0){
                 count <- count + 1 
             }
         }
@@ -195,46 +220,62 @@ row_wise_scan <- function(x){
 
     return(count)
 }
+
 ```
 
 
 3. Similarly, write a function `col_wise_scan` which does exactly the same thing but scans the entries of `M` one column after another
 
-```R
+```{R}
 col_wise_scan <- function(x){
+    n <- nrow(x)
+    m <- ncol(x)
+
     count <- 0
-    
-    ... # Insert your code here
+    for(j in 1:m){
+        for(i in 1:n){
+            if(x[i, j] >= 0){
+                count <- count + 1 
+            }
+        }
+    }
 
     return(count)
 }
+
+
 ```
 You can check if your code is doing what it's supposed to using the function here[^footnote]
 
 4. Between `col_wise_scan` and `row_wise_scan`, which function do you expect to take shorter to run? Why?
+```{R}
+#the row_wise_scan function is faster, because R stores matrices in column-major order 
+```
 
 5. Write a function `time_scan` which takes in a method `f` and a matrix `M` and outputs the amount of time taken to run `f(M)`
 
-```R
+```{R}
 time_scan <- function(f, M){
-    initial_time <- ... # Write your code here
+    start_time <- Sys.time()
     f(M)
-    final_time <- ...  # Write your code here
-    
-    total_time_taken <- final_time - initial_time
-    return(total_time_taken)
+    end_time <- Sys.time()
+    return(end_time - start_time)
 }
+
 ```
 
 Provide your output to
 
-```R
+```{R}
 list(
     row_wise_time = time_scan(row_wise_scan, M),
     col_wise_time = time_scan(row_wise_scan, M)
 )
 ```
 Which took longer to run? 
+```{R}
+#row
+```
 
 6. Repeat this experiment now when:
     * `M` is a $100 \times 100$ matrix
@@ -242,6 +283,9 @@ Which took longer to run?
     * `M` is a $5000 \times 5000$ matrix
 
 What can you conclude?
+```{R}
+# as the matrix size increases, the difference in execution times become larger
+```
 
 <br><br><br><br>
 <br><br><br><br>
@@ -257,7 +301,7 @@ sessionInfo()
 
 [^footnote]: If your code is right, the following code should evaluate to be `TRUE`
 
-    ```R
+    ```{R}
     sapply(1:100, function(i) {
         x <- generate_matrix(100)
         row_wise_scan(x) == col_wise_scan(x)
