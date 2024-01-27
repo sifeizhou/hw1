@@ -4,7 +4,6 @@ author: "[sifei zhou]{style='background-color: yellow;'}"
 toc: true
 title-block-banner: true
 title-block-style: default
-#format: html
 format: pdf
 ---
 
@@ -14,7 +13,6 @@ format: pdf
 
 ::: {.callout-important}
 ## Due: Fri, Jan 26, 2024 @ 11:59pm
-
 
 
 Please read the instructions carefully before submitting your assignment. 
@@ -39,7 +37,7 @@ Please read the instructions carefully before submitting your assignment.
 ## 20 points
 :::
 ```{R}
-install.packages("dplyr")
+#install.packages("dplyr")
 library(dplyr)
 ```
 
@@ -307,3 +305,5 @@ sessionInfo()
         row_wise_scan(x) == col_wise_scan(x)
     }) %>% sum == 100
     ```
+
+
